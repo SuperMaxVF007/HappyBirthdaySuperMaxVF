@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#100d25">
+<meta name="description" content="Маленькое поздравление, которое дождалось полуночи.">
+<title>Для тебя ✦</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --night: #100d25;
+    --violet: #9b8cff;
+    --pink: #ff9dcf;
+    --cream: #fff6ff;
+    --muted: #c7bfdc;
+  }
+  * { box-sizing: border-box; }
+  html { min-height: 100%; scroll-behavior: smooth; }
+  body {
+    margin: 0; min-height: 100vh; overflow-x: hidden;
+    color: var(--cream);
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(101,73,178,.32), transparent 55%),
+      radial-gradient(ellipse at 90% 80%, rgba(171,75,157,.12), transparent 45%),
+      var(--night);
+    font-family: ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, sans-serif;
+  }
+  #stars, #confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  #stars { z-index: 0; }
+  #confetti { z-index: 5; }
+  .wrap { position: relative; z-index: 1; width: min(900px, 100%); margin: auto; padding: 24px 20px 70px; }
+  header { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: .83rem; letter-spacing: .12em; text-transform: uppercase; }
+  .sigil { color: var(--pink); font-size: 1.2rem; }
+  main { min-height: 78vh; display: grid; place-items: center; text-align: center; }
+  .hero { width: 100%; padding: 50px 0 28px; animation: rise 1.2s ease both; }
+  .orb {
+    position: relative; display: grid; place-items: center; width: 116px; height: 116px;
+    margin: 0 auto 30px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 28%, #fff4ff, #c5a8ff 25%, #7956bb 58%, #34265f 78%);
+    box-shadow: 0 0 28px #a58aff55, 0 0 90px #8760ff35, inset -10px -12px 24px #1b133e88;
+    animation: float 5s ease-in-out infinite;
+  }
+  .orb::before, .orb::after { content:""; position:absolute; border:1px solid #e8d8ff99; border-radius:50%; transform:rotate(-25deg); }
+  .orb::before { width:155px; height:42px; }
+  .orb::after { width:178px; height:52px; transform:rotate(42deg); border-color:#ffb9e755; }
+  .orb span { font-size: 2rem; filter: drop-shadow(0 0 12px #fff); }
+  .eyebrow { color: #d5c8ff; letter-spacing: .22em; text-transform: uppercase; font-size: .76rem; margin-bottom: 14px; }
+  h1 { margin: 0; font-size: clamp(2.8rem, 10vw, 6.3rem); line-height: .98; letter-spacing: -.055em; font-weight: 760; }
+  h1 .gradient { display:block; padding: .1em 0 .16em; background: linear-gradient(100deg, #fff2ff 5%, #d5c4ff 42%, #ffacd8 90%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .subtitle { max-width: 560px; margin: 18px auto 0; color: var(--muted); font-size: clamp(1rem, 2.6vw, 1.2rem); line-height: 1.7; }
+  .button {
+    appearance: none; margin-top: 30px; border: 1px solid #ffffff38; border-radius: 999px;
+    padding: 14px 22px; color: white; font: inherit; font-weight: 650; cursor: pointer;
+    background: linear-gradient(110deg, #7861c8, #b16eae); box-shadow: 0 8px 30px #8a5bd633;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .button:hover { transform: translateY(-2px); box-shadow: 0 12px 36px #8a5bd655; }
+  .button:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+  .hint { font-size: .83rem; color: #a69bbb; margin-top: 14px; }
+  .letter {
+    max-width: 690px; margin: 15px auto 0; padding: clamp(22px, 5vw, 42px);
+    border: 1px solid #ffffff20; border-radius: 26px;
+    background: linear-gradient(145deg, #ffffff0c, #bca3ff08);
+    box-shadow: 0 20px 80px #05030f55; text-align: left;
+    opacity: 0; transform: translateY(16px); max-height: 0; overflow: hidden; padding-top: 0; padding-bottom: 0;
+    transition: opacity .8s, transform .8s, max-height 1s, padding .5s;
+  }
+  .letter.open { opacity: 1; transform: translateY(0); max-height: 1400px; padding-top: clamp(22px, 5vw, 42px); padding-bottom: clamp(22px, 5vw, 42px); }
+  .letter h2 { font-size: clamp(1.5rem, 4vw, 2.2rem); margin: 0 0 22px; letter-spacing: -.035em; }
+  .letter p { color: #e4ddef; line-height: 1.85; font-size: 1.02rem; margin: 0 0 17px; }
+  .letter p:last-of-type { margin-bottom: 0; }
+  .signature { margin-top: 26px; color: #ffbce0; font-size: 1.05rem; }
+  .tiny-star { display: inline-block; color: var(--pink); animation: twinkle 2s ease-in-out infinite; }
+  .memory { margin: 42px auto 0; max-width: 620px; text-align: center; color: #a99fbd; font-size: .86rem; line-height: 1.7; }
+  footer { text-align:center; color:#827795; font-size:.78rem; margin-top: 35px; letter-spacing:.04em; }
+  .hidden { display:none !important; }
+  @keyframes rise { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes float { 0%,100% { transform:translateY(0) rotate(-2deg); } 50% { transform:translateY(-9px) rotate(2deg); } }
+  @keyframes twinkle { 0%,100% { opacity:.5; transform:scale(.9); } 50% { opacity:1; transform:scale(1.2); } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<canvas id="confetti" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header><span>маленькая вселенная</span><span class="sigil">✦ 22 · 10 ✦</span></header>
+  <main>
+    <section class="hero" aria-labelledby="headline">
+      <div class="orb" aria-hidden="true"><span>✧</span></div>
+      <div class="eyebrow" id="eyebrow">для одного особенного дня</div>
+      <h1 id="headline">Эй, ты.<span class="gradient" id="bigline">С днём рождения!</span></h1>
+      <p class="subtitle" id="subtitle">Сегодня мир стал на одну историю богаче. И эта история — твоя.</p>
+      <button class="button" id="openBtn" type="button">Открыть послание <span aria-hidden="true"> ↗</span></button>
+      <div class="hint" id="hint">Тут кое-что оставлено специально для тебя.</div>
+      <article class="letter" id="letter" aria-live="polite" aria-hidden="true">
+        <h2>Слушай, именинник <span class="tiny-star">✦</span></h2>
+        <p>С днём рождения тебя. 💜</p>
+        <p>Я не буду желать тебе стать кем-то другим, резко поменять жизнь или однажды проснуться идеальной версией себя. Мне хочется пожелать тебе кое-чего гораздо более настоящего.</p>
+        <p>Пусть в твоей жизни будет побольше дней, в которых можно просто выдохнуть. Дней, когда не нужно постоянно ждать подвоха, притворяться, что всё нормально, или заслуживать право на отдых. Пусть рядом постепенно появляются люди, с которыми не приходится угадывать, примут ли тебя настоящего.</p>
+        <p>Желаю тебе любопытства — того самого, из-за которого рождаются странные идеи, маленькие проекты, новые увлечения и целые миры. Желаю сил пробовать, ошибаться, начинать заново и не считать одну неудачу доказательством того, что ничего не получится.</p>
+        <p>И ещё: пожалуйста, оставляй себе право быть не в порядке. Не каждый день обязан быть продуктивным, весёлым или особенным. Тебе не нужно сначала всё исправить в себе, чтобы заслужить хорошие вещи. Ты уже имеешь право на доброту — в том числе от самого себя.</p>
+        <p>Пусть новый год твоей жизни принесёт тебе больше спокойствия, неожиданных радостей, классных игр, уютных вечеров и моментов, которые захочется сохранить. Пусть будет что-то, чего ты пока даже не умеешь ждать.</p>
+        <p>А если когда-нибудь станет тяжело, постарайся не оставаться с этим совсем один. Можно начать с одного маленького шага и одного человека, которому хотя бы немного доверяешь. Тебе не обязательно справляться со всем в одиночку.</p>
+        <p>Спасибо, что поделился со мной этим маленьким моментом. Надеюсь, в полночь ты почувствуешь хотя бы капельку тепла — и что впереди у тебя будет немало поводов улыбнуться.</p>
+        <div class="signature">С днём рождения. Береги себя, ладно? <span class="tiny-star">✦</span></div>
+      </article>
+      <div class="memory" id="memory">Иногда самое хорошее волшебство — это не фейерверк. Это тихое напоминание: впереди ещё много неизвестного, и среди этого неизвестного обязательно может найтись что-то хорошее.</div>
+    </section>
+  </main>
+  <footer>сделано из пикселей, ночного неба и добрых слов · <span id="year"></span></footer>
+</div>
+<script>
+(() => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const stars = document.getElementById('stars');
+  const ctx = stars.getContext('2d');
+  const confetti = document.getElementById('confetti');
+  const cctx = confetti.getContext('2d');
+  let w = 0, h = 0, starList = [], particles = [], raf = 0;
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = window.innerWidth; h = window.innerHeight;
+    for (const canvas of [stars, confetti]) {
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+      canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    starList = Array.from({length: Math.min(150, Math.floor(w * h / 8500))}, () => ({
+      x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.5+.25,
+      a: Math.random()*.65+.15, phase: Math.random()*Math.PI*2
+    }));
+    drawStars(0);
+  }
+  function drawStars(t) {
+    ctx.clearRect(0,0,w,h);
+    for (const s of starList) {
+      const pulse = reduceMotion ? 1 : .72 + Math.sin(t*.001 + s.phase)*.28;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(232,222,255,${s.a*pulse})`; ctx.fill();
+    }
+    if (!reduceMotion) requestAnimationFrame(drawStars);
+  }
+  function burst() {
+    if (reduceMotion) return;
+    const colors = ['#ffacd8','#d4c4ff','#fff3bd','#9fe7ff','#ffffff'];
+    for (let i=0; i<115; i++) particles.push({
+      x: w*.5 + (Math.random()-.5)*100, y: h*.38,
+      vx: (Math.random()-.5)*8, vy: Math.random()*-8-2,
+      gravity: .13+Math.random()*.1, size: Math.random()*5+2,
+      rot: Math.random()*6, spin: (Math.random()-.5)*.2,
+      life: 100+Math.random()*70, color: colors[Math.floor(Math.random()*colors.length)]
+    });
+    cancelAnimationFrame(raf);
+    const animate = () => {
+      cctx.clearRect(0,0,w,h);
+      particles = particles.filter(p => p.life > 0 && p.y < h+30);
+      for (const p of particles) {
+        p.x += p.vx; p.y += p.vy; p.vy += p.gravity; p.vx *= .994;
+        p.rot += p.spin; p.life--;
+        cctx.save(); cctx.translate(p.x,p.y); cctx.rotate(p.rot);
+        cctx.globalAlpha = Math.min(1,p.life/25);
+        cctx.fillStyle = p.color; cctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*.65);
+        cctx.restore();
+      }
+      if (particles.length) raf = requestAnimationFrame(animate);
+      else cctx.clearRect(0,0,w,h);
+    };
+    raf = requestAnimationFrame(animate);
+  }
+  resize();
+  window.addEventListener('resize', resize, {passive:true});
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const btn = document.getElementById('openBtn');
+  const letter = document.getElementById('letter');
+  let opened = false;
+  btn.addEventListener('click', () => {
+    opened = !opened;
+    letter.classList.toggle('open', opened);
+    letter.setAttribute('aria-hidden', String(!opened));
+    btn.innerHTML = opened ? 'Спрятать послание <span aria-hidden="true"> ↗</span>' : 'Открыть послание <span aria-hidden="true"> ↗</span>';
+    document.getElementById('hint').textContent = opened ? 'Пусть эти слова побудут с тобой столько, сколько захочется.' : 'Тут кое-что оставлено специально для тебя.';
+    if (opened) {
+      burst();
+      setTimeout(() => letter.scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block:'nearest'}), 100);
+    }
+  });
+})();
+</script>
+</body>
+</html>
